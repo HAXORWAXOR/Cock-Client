@@ -57,36 +57,8 @@ namespace Cock_Client
             if (ProcOpen)
                 ProcOpenLabel.Text = "Open";
 
-            short fkey = GetAsyncKeyState(Keys.F);
-            short gkey = GetAsyncKeyState(Keys.G);
             short ckey = GetAsyncKeyState(Keys.C);
-            short vkey = GetAsyncKeyState(Keys.V);
-            short rkey = GetAsyncKeyState(Keys.R);
-            short ykey = GetAsyncKeyState(Keys.Y);
 
-            if ((fkey & 0x8000) > 0)
-            {
-                if (Fly.Checked)
-                {
-                    Fly.Checked = false;
-                }
-                else if (!Fly.Checked)
-                {
-                    Fly.Checked = true;
-                }
-            }
-
-            if ((gkey & 0x8000) > 0)
-            {
-                if (AirJump.Checked)
-                {
-                    AirJump.Checked = false;
-                }
-                else if (!AirJump.Checked)
-                {
-                    AirJump.Checked = true;
-                }
-            }
 
             if ((ckey & 0x8000) > 0)
             {
@@ -98,35 +70,6 @@ namespace Cock_Client
                 {
                     Zoom.Checked = true;
                 }
-            }
-
-            if ((vkey & 0x8000) > 0)
-            {
-                if (Speed.Checked)
-                {
-                    Speed.Checked = false;
-                }
-                else if (!Speed.Checked)
-                {
-                    Speed.Checked = true;
-                }
-            }
-
-            if ((rkey & 0x8000) > 0)
-            {
-                if (TriggerBot.Checked)
-                {
-                    TriggerBot.Checked = false;
-                }
-                else if (!TriggerBot.Checked)
-                {
-                    TriggerBot.Checked = true;
-                }
-            }
-
-            if ((ykey & 0x8000) > 0)
-            {
-                m.WriteMemory("base+036A3EE8,0x8,0x18,0xA8,0x19C", "float", "1000");
             }
 
             if (TriggerBotEnabled)
@@ -209,7 +152,7 @@ namespace Cock_Client
             }
             else if (!Zoom.Checked)
             {
-                m.WriteMemory("Minecraft.Windows.exe+03657E90,0x38,0x130,0xF0", "float", UserFOV.Text);
+                m.WriteMemory("Minecraft.Windows.exe+03657E90,0x38,0x130,0xF0", "float", "90");
             }
         }
 
@@ -232,7 +175,7 @@ namespace Cock_Client
             else if (!Speed.Checked)
             {
                 m.UnfreezeValue("Minecraft.Windows.exe+0369CC08,0xE8,0x478,0x18,0x1F8,0x9C");
-                m.WriteMemory("Minecraft.Windows.exe+0369CC08,0xE8,0x478,0x18,0x1F8,0x9C", "float", "0.1000000015");
+                m.WriteMemory("Minecraft.Windows.exe+0369CC08,0xE8,0x478,0x18,0x1F8,0x9C", "float", "0.1000000100");
             }
         }
 
@@ -331,11 +274,25 @@ namespace Cock_Client
 
         private void keybinds_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("F - Fly\n" +
-                "G - AirJump\n" +
-                "C - Zoom\n" +
-                "V - Speed\n" +
-                "R - TriggerBot");
+            MessageBox.Show("C - Zoom");
+        }
+
+        private void checkBox1_CheckedChanged_1(object sender, EventArgs e)
+        {
+            if (InstaBreak.Checked)
+            {
+                m.FreezeValue("Minecraft.Windows.exe+036A3EF8,0x8,0x18,0xA8,0x19C", "float", "1");
+            }
+
+            else if (!InstaBreak.Checked)
+            {
+                m.UnfreezeValue("Minecraft.Windows.exe+036A3EF8,0x8,0x18,0xA8,0x19C");
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }
